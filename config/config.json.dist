@@ -1,0 +1,9 @@
+{
+    "port": port,
+    "commands": {
+        "commandRoute1": {
+            "command1": "command to execute",
+            "expected1": "part of or whole expected output"
+        }
+    }
+}
