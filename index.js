@@ -14,7 +14,7 @@ const server = createServer((req, res) => {
             commandFound = true;
             command.run(commandData, commandRoute, (result) => {
                 res.writeHead(result.ok ? 200 : 500, { 'Content-Type': 'application/json; charset=utf-8' });
-                res.end(result);
+                res.end(JSON.stringify(result));
             });
         }
     }
