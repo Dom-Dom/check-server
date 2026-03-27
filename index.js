@@ -13,7 +13,6 @@ const server = createServer((req, res) => {
         if (req.url === `/${commandRoute}` && req.method === 'GET') {
             commandFound = true;
             command.run(commandData, commandRoute, (result) => {
-                console.log(result)
                 res.writeHead(result.ok ? 200 : 500, { 'Content-Type': 'application/json; charset=utf-8' });
                 res.end(result);
             });
