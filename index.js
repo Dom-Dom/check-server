@@ -47,8 +47,13 @@ const server = createServer((req, res) => {
     }
 
     if (!commandFound) {
-        res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-        res.end("Not found");
+        res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(
+            JSON.stringify({
+                ok: false,
+                err: 'Command not found',
+            })
+        );
     }
 });
 
