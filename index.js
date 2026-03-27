@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
-import { exec } from 'child_process';
 
 import config from './config/config.js';
+import command from './common/command.js'
 
 const server = createServer((req, res) => {
     const commands = config.config.commands;
@@ -12,36 +12,10 @@ const server = createServer((req, res) => {
 
         if (req.url === `/${commandRoute}` && req.method === 'GET') {
             commandFound = true;
-            if (!commandData.command || !commandData.expected) {
-                res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
-                res.end(
-                    JSON.stringify({
-                        ok: false,
-                        err: `misformatted json for command ${commandRoute}`
-                    })
-                );
-                return;
-            }
-            exec(commandData.command, (error, stdout, stderr) => {
-                if (stdout.includes(commandData.expected)) {
-                    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-                    res.end(
-                        JSON.stringify({
-                            ok: true,
-                            stdout,
-                            stderr,
-                        })
-                    );
-                    return;
-                }
-                res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
-                res.end(
-                    JSON.stringify({
-                        ok: false,
-                        err: stderr,
-                    })
-                );
-                return;
+            command.run(commandData, commandRoute, (result) => {
+                console.log(result)
+                res.writeHead(result.ok ? 200 : 500, { 'Content-Type': 'application/json; charset=utf-8' });
+                res.end(result);
             });
         }
     }
